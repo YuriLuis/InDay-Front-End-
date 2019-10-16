@@ -1021,7 +1021,7 @@
                   </b-input-group>
                 </b-form-group>
                 <div class="form-actions">
-                  <b-button type="submit" variant="primary">Save changes</b-button>
+                  <b-button type="submit" variant="primary">Salvar</b-button>
                   <b-button type="button" variant="secondary">Cancel</b-button>
                 </div>
               </b-card-body>

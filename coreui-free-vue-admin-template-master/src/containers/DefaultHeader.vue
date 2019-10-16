@@ -8,7 +8,7 @@
       <SidebarToggler class="d-md-down-none" display="lg" :defaultOpen=true />
       <b-navbar-nav class="d-md-down-none">
         <b-nav-item class="px-3" to="/dashboard" >Início</b-nav-item>
-        <b-nav-item class="px-3" to="/users" exact>Lançamentos</b-nav-item>
+        <b-nav-item class="px-3" to="/modal" exact>Lançamentos</b-nav-item>
         <b-nav-item class="px-3">Relatórios</b-nav-item>
         <b-nav-item class="px-3">Metas</b-nav-item>
       </b-navbar-nav>

@@ -58,6 +58,9 @@ const Register = () => import('@/views/pages/Register')
 const Users = () => import('@/views/users/Users')
 const User = () => import('@/views/users/User')
 
+// Modal
+const Modal = () => import('@/views/modal/Despesa')
+
 Vue.use(Router)
 
 function configRoutes() {
@@ -65,7 +68,7 @@ function configRoutes() {
     {
       path: '/',
       redirect: '/dashboard',
-      name: 'Home',
+      name: '',
       component: DefaultContainer,
       children: [
         {
@@ -78,7 +81,7 @@ function configRoutes() {
           redirect: '/theme/colors',
           name: 'Theme',
           component: {
-            render (c) { return c('router-view') }
+            render(c) { return c('router-view') }
           },
           children: [
             {
@@ -104,10 +107,16 @@ function configRoutes() {
           component: Widgets
         },
         {
+          path: 'modal',
+          meta: { label: '' },
+          component: Modal
+
+        },
+        {
           path: 'users',
-          meta: { label: 'Users'},
+          meta: { label: 'Users' },
           component: {
-            render (c) { return c('router-view') }
+            render(c) { return c('router-view') }
           },
           children: [
             {
@@ -116,7 +125,7 @@ function configRoutes() {
             },
             {
               path: ':id',
-              meta: { label: 'User Details'},
+              meta: { label: 'User Details' },
               name: 'User',
               component: User,
             },
@@ -127,7 +136,7 @@ function configRoutes() {
           redirect: '/base/cards',
           name: 'Base',
           component: {
-            render (c) { return c('router-view') }
+            render(c) { return c('router-view') }
           },
           children: [
             {
@@ -217,7 +226,7 @@ function configRoutes() {
           redirect: '/buttons/standard-buttons',
           name: 'Buttons',
           component: {
-            render (c) { return c('router-view') }
+            render(c) { return c('router-view') }
           },
           children: [
             {
@@ -247,7 +256,7 @@ function configRoutes() {
           redirect: '/icons/font-awesome',
           name: 'Icons',
           component: {
-            render (c) { return c('router-view') }
+            render(c) { return c('router-view') }
           },
           children: [
             {
@@ -277,7 +286,7 @@ function configRoutes() {
           redirect: '/notifications/alerts',
           name: 'Notifications',
           component: {
-            render (c) { return c('router-view') }
+            render(c) { return c('router-view') }
           },
           children: [
             {
@@ -304,7 +313,7 @@ function configRoutes() {
       redirect: '/pages/404',
       name: 'Pages',
       component: {
-        render (c) { return c('router-view') }
+        render(c) { return c('router-view') }
       },
       children: [
         {
