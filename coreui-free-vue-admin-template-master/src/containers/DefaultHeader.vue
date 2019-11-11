@@ -10,7 +10,7 @@
         <b-nav-item class="px-3" to="/dashboard" >Início</b-nav-item>
         <b-nav-item class="px-3" to="/modal" exact>Lançamentos</b-nav-item>
         <b-nav-item class="px-3">Relatórios</b-nav-item>
-        <b-nav-item class="px-3">Metas</b-nav-item>
+        <b-nav-item class="px-3" to="/metas" exact>Metas</b-nav-item>
       </b-navbar-nav>
       <b-navbar-nav class="ml-auto">
         <b-nav-item class="d-md-down-none">
