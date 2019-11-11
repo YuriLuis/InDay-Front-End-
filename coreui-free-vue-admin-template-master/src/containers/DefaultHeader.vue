@@ -28,7 +28,7 @@
         <DefaultHeaderDropdownAccnt/> -->
       </b-navbar-nav> 
       <!--<AsideToggler class="d-none d-lg-block" />
-      <!--<AsideToggler class="d-lg-none" mobile />-->
+      <AsideToggler class="d-lg-none" mobile />-->
     </AppHeader>
 </template>
 <script>
