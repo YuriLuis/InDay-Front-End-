@@ -42,10 +42,10 @@
             <b-card-footer class="p-4">
               <b-row>
                 <b-col cols="6">
-                  <b-button block class="btn btn-facebook"><span>facebook</span></b-button>
+                  
                 </b-col>
                 <b-col cols="6">
-                  <b-button block class="btn btn-gmail" type="button"><span>gmail</span></b-button>
+                  
                 </b-col>
               </b-row>
             </b-card-footer>
