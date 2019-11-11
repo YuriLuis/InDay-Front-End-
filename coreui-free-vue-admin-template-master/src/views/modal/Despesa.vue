@@ -26,15 +26,6 @@
                 size="lg"
               >Receita</b-button>
             </b-col>
-            <b-col sm xs="12" class="text-center mt-3">
-              <b-button
-                type="button"
-                variant="warning"
-                @click="warningModal = true"
-                class="mr-1"
-                size="lg"
-              >Metas</b-button>
-            </b-col>
 
             <!--/.col-->
           </b-row>
@@ -129,58 +120,42 @@
       v-model="successModal"
       @ok="successModal = false"
       ok-variant="success"
-    ></b-modal>
-    <b-modal
-      title="Metas"
-      variant="warning"
-      header-bg-variant="warning"
-      content-class="border-warning"
-      v-model="warningModal"
-      @ok="warningModal = false"
-      ok-variant="warning"
     >
-      <b-row>
+          <b-row>
         <b-col sm="12">
           <b-card>
             <div slot="header">
-              <strong>Lançamento de metas</strong>
+              <strong>Lançamento de Receita</strong>
               <small></small>
             </div>
             <b-form-group>
-              <label for="descrição" te> <strong>Descrição</strong></label>
+              <label for="descrição"><strong>Descrição</strong></label>
               <b-form-input type="text" id="descrição" placeholder="Informe a descrição"></b-form-input>
             </b-form-group>
             <b-row>
               <b-col sm="6">
-                <b-form-group>
-                  <label for="de"><strong>De</strong></label>
-                  <b-form-input type="Date" id="de"></b-form-input>
+                <b-form-group id="valor">
+                  <label for="valor"><strong>Valor</strong></label>
+                  <b-input-group>
+                    <b-input-group-prepend>
+                      <b-input-group-text>
+                        <i class="fa fa-brasil"></i>
+                      </b-input-group-text>
+                    </b-input-group-prepend>
+                    <b-form-input type="text" placeholder="R$ 0.00"></b-form-input>
+                  </b-input-group>
                 </b-form-group>
               </b-col>
               <b-col sm="6">
                 <b-form-group>
-                  <label for="data"><strong>Até</strong></label>
+                  <label for="data"><strong>Data</strong></label>
                   <b-form-input type="date" id="data"></b-form-input>
                 </b-form-group>
               </b-col>
             </b-row>
 
-            <b-col sm="12">
-              <b-form-group id="valor">
-                <label for="valor"><strong> Valor Mensal </strong></label>
-                <b-input-group>
-                  <b-input-group-prepend>
-                    <b-input-group-text>
-                      <i class="fa fa-brasil"></i>
-                    </b-input-group-text>
-                  </b-input-group-prepend>
-                  <b-form-input type="text" placeholder="R$ 0.00"></b-form-input>
-                </b-input-group>
-              </b-form-group>
-            </b-col>
-             
             <strong> 
-            <b-form-group label="Categoria" label-for="Categorias" :label-cols="3">
+            <b-form-group  label="Categoria" label-for="Categorias" :label-cols="3">
               <b-form-select
                 id="basicSelect"
                 :plain="true"
@@ -189,6 +164,18 @@
               ></b-form-select>
             </b-form-group>
             </strong>
+            <b-form-group label-for="basicCheckboxes" :label-cols="0">
+              <b-form-checkbox-group
+                stacked
+                id="basicCheckboxes"
+                name="Checkboxes"
+                :plain="true"
+                :checked="[]"
+              >
+                <b-form-checkbox value="1"> <strong>é receita fixa? (mensal) </strong></b-form-checkbox>
+                <b-form-checkbox value="2"> <strong>é um lançamento parcelado?</strong></b-form-checkbox>
+              </b-form-checkbox-group>
+            </b-form-group>
             <div class="form-actions">
               <b-row class="align-items-center mt-2">
                 <b-col sm xs="12" class="text-center mt-2">

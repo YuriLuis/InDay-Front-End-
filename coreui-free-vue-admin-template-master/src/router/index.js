@@ -60,6 +60,7 @@ const User = () => import('@/views/users/User')
 
 // Modal
 const Modal = () => import('@/views/modal/Despesa')
+const Metas = () => import('@/views/modal/metas')
 
 Vue.use(Router)
 
@@ -112,6 +113,13 @@ function configRoutes() {
           component: Modal
 
         },
+        {
+          path: 'metas',
+          meta: { label: '' },
+          component: Metas
+
+        },
+       
         {
           path: 'users',
           meta: { label: 'Users' },
