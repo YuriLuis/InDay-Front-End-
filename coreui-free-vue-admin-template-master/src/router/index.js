@@ -61,6 +61,7 @@ const User = () => import('@/views/users/User')
 // Modal
 const Modal = () => import('@/views/modal/Despesa')
 const Metas = () => import('@/views/modal/metas')
+const tabelaDespesa = () => import('@/views/modal/tabelaDespesa')
 
 Vue.use(Router)
 
@@ -68,7 +69,7 @@ function configRoutes() {
   return [
     {
       path: '/',
-      redirect: '/dashboard',
+      redirect: '/Pages/Login',
       name: '',
       component: DefaultContainer,
       children: [
@@ -118,6 +119,11 @@ function configRoutes() {
           meta: { label: '' },
           component: Metas
 
+        },
+        {
+          path:'tabelaDespesa',
+          meta:{label:''},
+          component:tabelaDespesa
         },
        
         {
