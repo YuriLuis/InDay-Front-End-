@@ -72,7 +72,7 @@
                         <i class="fa fa-brasil"></i>
                       </b-input-group-text>
                     </b-input-group-prepend>
-                    <b-form-input v-model="despesa.valor" type="number" placeholder="R$ 0.00"></b-form-input>
+                    <b-form-input  v-model="despesa.valor" type="number" placeholder="R$ 0.00"></b-form-input>
                   </b-input-group>
                 </b-form-group>
               </b-col>
@@ -119,12 +119,10 @@
                     type="submit"
                     variant="success"
                     size="sm"
-                    @click="Salvar(despesa)"
+                    @click="SalvarDespesa(despesa)"
                   >Salvar</b-button>
                 </b-col>
-                <b-col sm xs="12" class="text-center mt-2">
-                  <b-button type="button" variant="danger" size="sm">Cancelar</b-button>
-                </b-col>
+                
               </b-row>
             </div>
           </b-card>
@@ -152,7 +150,7 @@
               <label for="descrição">
                 <strong>Descrição</strong>
               </label>
-              <b-form-input type="text" id="descrição" placeholder="Informe a descrição"></b-form-input>
+              <b-form-input type="text" id="descrição" placeholder="Informe a descrição" v-model="receita.descricao"></b-form-input>
             </b-form-group>
             <b-row>
               <b-col sm="6">
@@ -166,7 +164,7 @@
                         <i class="fa fa-brasil"></i>
                       </b-input-group-text>
                     </b-input-group-prepend>
-                    <b-form-input type="text" placeholder="R$ 0.00"></b-form-input>
+                    <b-form-input type="text" placeholder="R$ 0.00" v-model="receita.valor"></b-form-input>
                   </b-input-group>
                 </b-form-group>
               </b-col>
@@ -175,7 +173,7 @@
                   <label for="data">
                     <strong>Data</strong>
                   </label>
-                  <b-form-input type="date" id="data"></b-form-input>
+                  <b-form-input type="date" id="data" v-model="receita.data"></b-form-input>
                 </b-form-group>
               </b-col>
             </b-row>
@@ -198,10 +196,10 @@
                 :plain="true"
                 :checked="[]"
               >
-                <b-form-checkbox value="1">
+                <b-form-checkbox value="1" v-model="receita.ehDespesaFixa">
                   <strong>é receita fixa? (mensal)</strong>
                 </b-form-checkbox>
-                <b-form-checkbox value="2">
+                <b-form-checkbox value="2" v-model="receita.ehLancamentoParcelado" >
                   <strong>é um lançamento parcelado?</strong>
                 </b-form-checkbox>
               </b-form-checkbox-group>
@@ -209,10 +207,7 @@
             <div class="form-actions">
               <b-row class="align-items-center mt-2">
                 <b-col sm xs="12" class="text-center mt-2">
-                  <b-button type="submit" variant="success" size="sm">Salvar</b-button>
-                </b-col>
-                <b-col sm xs="12" class="text-center mt-2">
-                  <b-button type="button" variant="danger" size="sm">Cancelar</b-button>
+                  <b-button type="submit" variant="success" size="sm" @click="SalvarReceita(receita)">Salvar</b-button>
                 </b-col>
               </b-row>
             </div>
@@ -220,7 +215,7 @@
         </b-col>
       </b-row>
     </b-modal>
-    <tabela-despesa :despesa-nova="despesas"></tabela-despesa>
+    <tabela-despesa :despesa-nova="despesas" :receita-nova="receitas"></tabela-despesa>
   </div>
 </template>
 
@@ -249,19 +244,25 @@ export default {
         ehDespesaFixa: [],
         ehLancamentoParcelado: []
       },
-      valor: 0,
+      receita:{
+        descricao:"",
+        valor:"",
+        data:"",
+        ehDespesaFixa:[],
+        ehLancamentoParcelado:[]
+      },
       despesas: [],
-      novaDespesa: {},
-      dataSplit:[]
+      receitas:[]
+
     };
   },
   methods: {
-    Salvar(despesa) {
+    SalvarDespesa(despesa) {
       let objNulo = false;
-
+      
       if (
-        despesa.descricao == "" &&
-        despesa.valor == "" &&
+        despesa.descricao == "" ||
+        despesa.valor == "" ||
         despesa.data == ""
       ) {
         objNulo = true;
@@ -276,27 +277,29 @@ export default {
       let despesaFixa = false;
       let lancamentoParcelado = false;
 
-      if (this.despesa.ehDespesaFixa[0] != null) {
+      if (this.despesa.ehDespesaFixa[0] != undefined) {
         despesaFixa = true;
       }
 
-      if (this.despesa.ehLancamentoParcelado[0] != null) {
+      if (this.despesa.ehLancamentoParcelado[1] != undefined) {
         lancamentoParcelado = true;
       }
+     
+
       if (ps == null && !objNulo) {
         this.despesas.push({
           descricao: this.despesa.descricao,
           valor: this.despesa.valor,
           data: this.FormatarData(this.despesa.data),
-          ehDespesaFixa: despesaFixa,
-          ehLancamentoParcelado: lancamentoParcelado
+          ehDespesaFixa: despesaFixa ? 'Sim' : 'Não',
+          ehLancamentoParcelado: lancamentoParcelado ? 'Sim' : 'Não'
         });
       }
 
-      this.LimparCamposModal();
+      this.LimparCamposModalDespesa();
     },
-    LimparCamposModal() {
-      (this.despesa.descricao = ""),
+    LimparCamposModalDespesa() {
+        (this.despesa.descricao = ""),
         (this.despesa.valor = ""),
         (this.despesa.data = ""),
         (this.despesa.ehDespesaFixa = false),
@@ -306,10 +309,57 @@ export default {
         let dataSplit = new Date(data)
         return dataSplit.toLocaleDateString()
     },
+    SalvarReceita(receita){
+       let objNulo = false;
+      
+      if (
+        receita.descricao == "" ||
+        receita.valor == "" ||
+        receita.data == ""
+      ) {
+        objNulo = true;
+      }
+
+      const ps = this.receitas.find(p => {
+        return p.descricao == this.receita.descricao &&
+               p.valor == this.receita.valor &&
+               p.data == this.receita.data;
+      });
+
+      let despesaFixa = false;
+      let lancamentoParcelado = false;
+
+      if (this.receita.ehDespesaFixa[0] != undefined) {
+        despesaFixa = true;
+      }
+
+      if (this.receita.ehLancamentoParcelado[1] != undefined) {
+        lancamentoParcelado = true;
+      }
+     
+
+      if (ps == null && !objNulo) {
+        this.receitas.push({
+          descricao: this.receita.descricao,
+          valor: this.receita.valor,
+          data: this.FormatarData(this.receita.data),
+          ehDespesaFixa: despesaFixa ? 'Sim' : 'Não',
+          ehLancamentoParcelado: lancamentoParcelado ? 'Sim' : 'Não'
+        });
+      }
+     this.LimparCamposModaReceita()
+     
+    },
+     LimparCamposModaReceita() {
+        (this.receita.descricao = ""),
+        (this.receita.valor = ""),
+        (this.receita.data = ""),
+        (this.receita.ehDespesaFixa = false),
+        (this.receita.ehLancamentoParcelado = false);
+    },
   },
   watch: {
     despesa: function(val) {},
-    novaDespesa: function(val) {},
     mounted() {}
   }
 };
