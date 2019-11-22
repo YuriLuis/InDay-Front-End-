@@ -61,6 +61,7 @@ const User = () => import('@/views/users/User')
 // Modal
 const Modal = () => import('@/views/modal/Despesa')
 const Metas = () => import('@/views/modal/metas')
+const Categoria = () => import('@/views/modal/categoria')
 const tabelaDespesa = () => import('@/views/modal/tabelaDespesa')
 
 Vue.use(Router)
@@ -118,6 +119,12 @@ function configRoutes() {
           path: 'metas',
           meta: { label: '' },
           component: Metas
+
+        },
+        {
+          path: 'categoria',
+          meta: { label: '' },
+          component: Categoria
 
         },
         {

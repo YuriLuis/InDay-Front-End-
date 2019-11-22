@@ -11,6 +11,7 @@
         <b-nav-item class="px-3" to="/modal" exact>Lançamentos</b-nav-item>
         <b-nav-item class="px-3">Relatórios</b-nav-item>
         <b-nav-item class="px-3" to="/metas" exact>Metas</b-nav-item>
+        <b-nav-item class="px-3" to="/categoria" exact>Categoria</b-nav-item>
       </b-navbar-nav>
       <b-navbar-nav class="ml-auto">
         <!--
