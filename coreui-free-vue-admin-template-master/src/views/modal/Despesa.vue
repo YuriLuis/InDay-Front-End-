@@ -221,7 +221,8 @@
 
 <script>
 import tabelaDespesa from "./tabelaDespesa";
-import tabelaReceita from "./tabelaReceita"
+import tabelaReceita from "./tabelaReceita";
+import axios from "axios"
 export default {
   components: {
     tabelaDespesa,
@@ -258,6 +259,9 @@ export default {
   },
   methods: {
     SalvarDespesa(despesa) {
+
+
+
       let objNulo = false;
       
       if (
