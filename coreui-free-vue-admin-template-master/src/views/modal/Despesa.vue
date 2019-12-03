@@ -72,7 +72,7 @@
                         <i class="fa fa-brasil"></i>
                       </b-input-group-text>
                     </b-input-group-prepend>
-                    <b-form-input  v-model="despesa.valor" type="number" placeholder="R$ 0.00"></b-form-input>
+                    <b-form-input v-model="despesa.valor" type="number" placeholder="R$ 0.00"></b-form-input>
                   </b-input-group>
                 </b-form-group>
               </b-col>
@@ -122,7 +122,6 @@
                     @click="SalvarDespesa(despesa)"
                   >Salvar</b-button>
                 </b-col>
-                
               </b-row>
             </div>
           </b-card>
@@ -150,7 +149,12 @@
               <label for="descrição">
                 <strong>Descrição</strong>
               </label>
-              <b-form-input type="text" id="descrição" placeholder="Informe a descrição" v-model="receita.descricao"></b-form-input>
+              <b-form-input
+                type="text"
+                id="descrição"
+                placeholder="Informe a descrição"
+                v-model="receita.descricao"
+              ></b-form-input>
             </b-form-group>
             <b-row>
               <b-col sm="6">
@@ -177,16 +181,13 @@
                 </b-form-group>
               </b-col>
             </b-row>
-
             <strong>
-              <b-form-group label="Categoria" label-for="Categorias" :label-cols="3">
-                <b-form-select
-                  id="basicSelect"
-                  :plain="true"
-                  :options="['Categorias','Option 1', 'Option 2', 'Option 3']"
-                  value="Categorias"
-                ></b-form-select>
-              </b-form-group>
+              <div class="form-group">
+              <label for="categorias">Categorias</label>
+                <select class="form-control" v-for="categoria in categorias" :key="categoria.id" value="categoria" :v-model="receita.categoria.id">
+                  <option> <strong>{{categoria}}</strong></option>
+                </select>
+              </div>
             </strong>
             <b-form-group label-for="basicCheckboxes" :label-cols="0">
               <b-form-checkbox-group
@@ -199,7 +200,7 @@
                 <b-form-checkbox value="1" v-model="receita.ehDespesaFixa">
                   <strong>é receita fixa? (mensal)</strong>
                 </b-form-checkbox>
-                <b-form-checkbox value="2" v-model="receita.ehLancamentoParcelado" >
+                <b-form-checkbox value="2" v-model="receita.ehLancamentoParcelado">
                   <strong>é um lançamento parcelado?</strong>
                 </b-form-checkbox>
               </b-form-checkbox-group>
@@ -207,7 +208,12 @@
             <div class="form-actions">
               <b-row class="align-items-center mt-2">
                 <b-col sm xs="12" class="text-center mt-2">
-                  <b-button type="submit" variant="success" size="sm" @click="SalvarReceita(receita)">Salvar</b-button>
+                  <b-button
+                    type="submit"
+                    variant="success"
+                    size="sm"
+                    @click="SalvarReceita(receita)"
+                  >Salvar</b-button>
                 </b-col>
               </b-row>
             </div>
@@ -221,7 +227,9 @@
 
 <script>
 import tabelaDespesa from "./tabelaDespesa";
-import tabelaReceita from "./tabelaReceita"
+import tabelaReceita from "./tabelaReceita";
+import axios from "axios";
+
 export default {
   components: {
     tabelaDespesa,
@@ -244,22 +252,25 @@ export default {
         ehDespesaFixa: [],
         ehLancamentoParcelado: []
       },
-      receita:{
-        descricao:"",
-        valor:"",
-        data:"",
-        ehDespesaFixa:[],
-        ehLancamentoParcelado:[]
-      },
-      despesas: [],
-      receitas:[]
+      receita: {
+        descricao:null,
+        valor:null,
+        data:'',
+        ehDespesaFixa: [],
+        ehLancamentoParcelado: [],
+        categoria:{}
 
+      },
+      obj:{},
+      despesas: [],
+      receitas: [],
+      categorias: []
     };
   },
   methods: {
     SalvarDespesa(despesa) {
       let objNulo = false;
-      
+
       if (
         despesa.descricao == "" ||
         despesa.valor == "" ||
@@ -269,9 +280,11 @@ export default {
       }
 
       const ps = this.despesas.find(p => {
-        return p.descricao == this.despesa.descricao &&
-               p.valor == this.despesa.valor &&
-               p.data == this.despesa.data;
+        return (
+          p.descricao == this.despesa.descricao &&
+          p.valor == this.despesa.valor &&
+          p.data == this.despesa.data
+        );
       });
 
       let despesaFixa = false;
@@ -284,84 +297,87 @@ export default {
       if (this.despesa.ehLancamentoParcelado[1] != undefined) {
         lancamentoParcelado = true;
       }
-     
 
       if (ps == null && !objNulo) {
         this.despesas.push({
           descricao: this.despesa.descricao,
           valor: this.despesa.valor,
           data: this.FormatarData(this.despesa.data),
-          ehDespesaFixa: despesaFixa ? 'Sim' : 'Não',
-          ehLancamentoParcelado: lancamentoParcelado ? 'Sim' : 'Não'
+          ehDespesaFixa: despesaFixa ? "Sim" : "Não",
+          ehLancamentoParcelado: lancamentoParcelado ? "Sim" : "Não"
         });
       }
 
       this.LimparCamposModalDespesa();
     },
     LimparCamposModalDespesa() {
-        (this.despesa.descricao = ""),
+      (this.despesa.descricao = ""),
         (this.despesa.valor = ""),
         (this.despesa.data = ""),
         (this.despesa.ehDespesaFixa = false),
         (this.despesa.ehLancamentoParcelado = false);
     },
-    FormatarData(data){
-        let dataSplit = new Date(data)
-        return dataSplit.toLocaleDateString()
+    FormatarData(data) {
+      let dataSplit = new Date(data);
+      return dataSplit.toLocaleDateString();
     },
-    SalvarReceita(receita){
-       let objNulo = false;
-      
-      if (
-        receita.descricao == "" ||
-        receita.valor == "" ||
-        receita.data == ""
-      ) {
-        objNulo = true;
-      }
-
-      const ps = this.receitas.find(p => {
-        return p.descricao == this.receita.descricao &&
-               p.valor == this.receita.valor &&
-               p.data == this.receita.data;
-      });
-
+    SalvarReceita(receita) {
       let despesaFixa = false;
       let lancamentoParcelado = false;
 
       if (this.receita.ehDespesaFixa[0] != undefined) {
         despesaFixa = true;
       }
-
-      if (this.receita.ehLancamentoParcelado[1] != undefined) {
+      if (this.receita.ehLancamentoParcelado[0] != undefined) {
         lancamentoParcelado = true;
       }
-     
 
-      if (ps == null && !objNulo) {
-        this.receitas.push({
-          descricao: this.receita.descricao,
-          valor: this.receita.valor,
-          data: this.FormatarData(this.receita.data),
-          ehDespesaFixa: despesaFixa ? 'Sim' : 'Não',
-          ehLancamentoParcelado: lancamentoParcelado ? 'Sim' : 'Não'
-        });
-      }
-     this.LimparCamposModaReceita()
-     
+       this.obj= {
+        descricao: this.receita.descricao,
+        valor: this.receita.valor,
+        date: this.receita.data,
+        categoria:{
+          id: 1
+        } ,
+        login:{
+          id:12
+        },
+       
+        despesaFixa: despesaFixa,
+        despesaUnica: lancamentoParcelado,
+        pago: true
+      };
+       this.PostReceita(this.obj)
+
+      this.LimparCamposModaReceita();
     },
-     LimparCamposModaReceita() {
-        (this.receita.descricao = ""),
+    LimparCamposModaReceita() {
+      (this.receita.descricao = ""),
         (this.receita.valor = ""),
         (this.receita.data = ""),
         (this.receita.ehDespesaFixa = false),
         (this.receita.ehLancamentoParcelado = false);
     },
+    PostReceita(obj) {
+      axios.post("http://localhost:8080/receita", this.obj).then(response => {
+        this.obj = response.data;
+      });
+    },
+    GetCategorias() {
+      axios
+      .get("http://localhost:8080/categoria")
+      .then(response => {
+       this.categorias.push(response.data)
+      });
+    }
   },
-  watch: {
-    despesa: function(val) {},
-    mounted() {}
-  }
+   created: function () {
+    // this.GetCategorias();
+  },
+    mounted() {
+      this.GetCategorias();
+    }
+  
 };
 </script>
 

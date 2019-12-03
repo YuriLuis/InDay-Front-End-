@@ -21,13 +21,13 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="despesa in despesaNova" :key="despesa.descricao">
+                <tr v-for="despesa in despesas" :key="despesa.descricao">
                   <td>{{despesa.descricao}}</td>
                   <td>{{despesa.valor}}</td>
-                  <td>{{despesa.data}}</td>
-                  <td>Categoria</td>
-                  <td>{{despesa.ehDespesaFixa}}</td>
-                  <td>{{despesa.ehLancamentoParcelado}}</td>
+                  <td>{{despesa.date}}</td>
+                  <td>{{despesa.categoria.descricao}}</td>
+                  <td>{{despesa.despesaFixa}}</td>
+                  <td>{{despesa.despesaUnica}}</td>
                 </tr>
               </tbody>
             </table>
@@ -52,13 +52,13 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="receita in receitaNova" :key="receita.descricao">
+                <tr v-for="receita in receitas" :key="receita.descricao">
                   <td>{{receita.descricao}}</td>
                   <td>{{receita.valor}}</td>
-                  <td>{{receita.data}}</td>
-                  <td>Categoria</td>
-                  <td>{{receita.ehDespesaFixa}}</td>
-                  <td>{{receita.ehLancamentoParcelado}}</td>
+                  <td>{{receita.date}}</td>
+                  <td>{{receita.categoria.descricao}}</td>
+                  <td>{{receita.receitaFixa}}</td>
+                  <td>{{receita.receitaUnica}}</td>
                 </tr>
               </tbody>
             </table>
@@ -69,6 +69,7 @@
   </div>
 </template>
 <script>
+import axios from 'axios'
 export default {
   props: {
     despesaNova: {
@@ -82,17 +83,33 @@ export default {
 
   data() {
     return {
-      despesas: []
+      despesas: [],
+      receitas:[]
     };
   },
   methods: {
-    SalvarListaDespesas() {}
+    SalvarListaDespesas() {},
+    GetReceitas(){
+    axios
+    .get("http://localhost:8080/receita")
+    .then(response =>{
+      this.receitas = response.data
+    })
+    },
+    GetDespesas(){
+      axios
+      .get("http://localhost:8080/despesa")
+      .then(response =>{
+        this.despesas = response.data
+      })
+    }
   },
   watch: {
     despesaNova: function(val) {}
   },
   mounted() {
-    this.SalvarListaDespesas();
+    this.GetReceitas();
+    this.GetDespesas();
   }
 };
 </script>
