@@ -31,8 +31,7 @@
       content-class="border-warning"
       v-model="warningModal"
       @ok="warningModal = false"
-      ok-variant="warning"
-    >
+      ok-variant="warning">
       <b-row>
         <b-col sm="12">
           <b-card>
@@ -42,8 +41,16 @@
             </div>
             <b-form-group>
               <label for="descrição" te> <strong>Descrição</strong></label>
-              <b-form-input type="text" id="descrição" placeholder="Informe a descrição"></b-form-input>
+              <b-form-input type="text"
+                            id="descrição" 
+                            placeholder="Informe a descrição"
+                            v-model="categoria.descricao"
+                >
+              </b-form-input>
             </b-form-group>
+                  <b-col sm xs="12" class="text-center mt-5">
+          <b-button type="submit" variant="success" size="sm" @click="SalvarDescricao()">Salvar</b-button>
+      </b-col>
 
           </b-card>
         </b-col>
@@ -53,10 +60,15 @@
 </template>
 
 <script>
+import axios from "axios"
+
 export default {
   name: "Despesa",
   data() {
     return {
+      categoria: {
+        descricao: "",
+      },
       myModal: false,
       largeModal: false,
       smallModal: false,
@@ -66,8 +78,22 @@ export default {
       dangerModal: false,
       infoModal: false
     };
+
+  },
+  methods: {
+    SalvarDescricao() {
+      console.log(this.categoria)
+      axios.post("/categoria",this.categoria)
+      .then(response => {
+        this.categoria = response.data,
+        this.categoria.id = null,
+        this.categoria.descricao = "";
+        alert('Cadastrado!')
+      });
+
+    }
   }
-};
+}
 </script>
 
 <style>
