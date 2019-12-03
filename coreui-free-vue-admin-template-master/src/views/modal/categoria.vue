@@ -85,7 +85,9 @@ export default {
       console.log(this.categoria)
       axios.post("/categoria",this.categoria)
       .then(response => {
-        this.obj = response.data;
+        this.categoria = response.data,
+        this.categoria.id = null,
+        this.categoria.descricao = "";
         alert('Cadastrado!')
       });
 
