@@ -47,7 +47,7 @@
                             v-model="categoria.descricao"
                 >
               </b-form-input>
-            </b-form-group>
+          </b-form-group>
                   <b-col sm xs="12" class="text-center mt-5">
           <b-button type="submit" variant="success" size="sm" @click="SalvarDescricao()">Salvar</b-button>
       </b-col>
@@ -61,6 +61,7 @@
 
 <script>
 import axios from "axios"
+
 
 export default {
   name: "Despesa",
