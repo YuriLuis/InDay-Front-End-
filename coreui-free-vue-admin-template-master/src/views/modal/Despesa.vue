@@ -182,10 +182,14 @@
               </b-col>
             </b-row>
             <strong>
+  
               <div class="form-group">
               <label for="categorias">Categorias</label>
-                <select class="form-control" v-for="categoria in categorias" :key="categoria.id" value="categoria" :v-model="receita.categoria.id">
-                  <option> <strong>{{categoria}}</strong></option>
+                <select class="form-control" v-model="receita.categoria"  >
+                  <option v-for="categoria in categorias" 
+                          :key="categoria.id"
+                          :value="categoria"> <strong>{{categoria.descricao}}</strong>
+                  </option>
                 </select>
               </div>
             </strong>
@@ -228,12 +232,9 @@
 <script>
 import tabelaDespesa from "./tabelaDespesa";
 import tabelaReceita from "./tabelaReceita";
-<<<<<<< HEAD
-import axios from "axios";
 
-=======
 import axios from "axios"
->>>>>>> 3bbd348724b2694032bef09eb836ee57849a0a68
+
 export default {
   components: {
     tabelaDespesa,
@@ -262,7 +263,7 @@ export default {
         data:'',
         ehDespesaFixa: [],
         ehLancamentoParcelado: [],
-        categoria:{}
+        categoria:null
 
       },
       obj:{},
@@ -331,6 +332,7 @@ export default {
     SalvarReceita(receita) {
       let despesaFixa = false;
       let lancamentoParcelado = false;
+      console.log(this.receita.descricao)
 
       if (this.receita.ehDespesaFixa[0] != undefined) {
         despesaFixa = true;
@@ -339,24 +341,19 @@ export default {
         lancamentoParcelado = true;
       }
 
+       console.log(this.receita.categoria)
        this.obj= {
         descricao: this.receita.descricao,
         valor: this.receita.valor,
         date: this.receita.data,
-        categoria:{
-          id: 1
-        } ,
-        login:{
-          id:12
-        },
-       
+        categoria: this.receita.categoria,       
         despesaFixa: despesaFixa,
         despesaUnica: lancamentoParcelado,
         pago: true
       };
+     
        this.PostReceita(this.obj)
-
-      this.LimparCamposModaReceita();
+       this.LimparCamposModaReceita();
     },
     LimparCamposModaReceita() {
       (this.receita.descricao = ""),
@@ -374,7 +371,7 @@ export default {
       axios
       .get("http://localhost:8080/categoria")
       .then(response => {
-       this.categorias.push(response.data)
+       this.categorias = response.data
       });
     }
   },

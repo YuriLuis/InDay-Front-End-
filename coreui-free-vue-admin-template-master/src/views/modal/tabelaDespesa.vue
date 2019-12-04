@@ -26,8 +26,10 @@
                   <td>{{despesa.valor}}</td>
                   <td>{{despesa.date}}</td>
                   <td>{{despesa.categoria.descricao}}</td>
-                  <td>{{despesa.despesaFixa}}</td>
-                  <td>{{despesa.despesaUnica}}</td>
+                  <td v-if="despesa.despesaFixa">Sim</td>
+                  <td v-else>Não</td>
+                  <td v-if="despesa.despesaUnica">Sim</td>
+                  <td v-else>Não</td>
                 </tr>
               </tbody>
             </table>
@@ -57,8 +59,10 @@
                   <td>{{receita.valor}}</td>
                   <td>{{receita.date}}</td>
                   <td>{{receita.categoria.descricao}}</td>
-                  <td>{{receita.receitaFixa}}</td>
-                  <td>{{receita.receitaUnica}}</td>
+                  <td v-if="receita.receitaFixa" >Sim</td>
+                  <td v-else>Não</td>
+                  <td v-if="receita.receitaUnica">Sim</td>
+                  <td v-else>Não</td>
                 </tr>
               </tbody>
             </table>
@@ -84,7 +88,8 @@ export default {
   data() {
     return {
       despesas: [],
-      receitas:[]
+      receitas:[],
+      dataFormatada : ''
     };
   },
   methods: {
@@ -102,8 +107,16 @@ export default {
       .then(response =>{
         this.despesas = response.data
       })
-    }
+    
+      this.FormatarData(this.despesas.date)
+    
+    },
+     FormatarData(data) {
+      let dataSplit = new Date(data);
+      this.despesas.Date = dataSplit.toLocaleDateString();
+    },
   },
+  
   watch: {
     despesaNova: function(val) {}
   },
