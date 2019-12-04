@@ -232,6 +232,7 @@
 <script>
 import tabelaDespesa from "./tabelaDespesa";
 import tabelaReceita from "./tabelaReceita";
+<<<<<<< HEAD
 
 import axios from "axios"
 
