@@ -85,17 +85,15 @@
                 </b-form-group>
               </b-col>
             </b-row>
-
-            <strong>
-              <b-form-group label="Categoria" label-for="Categorias" :label-cols="3">
-                <b-form-select
-                  id="basicSelect"
-                  :plain="true"
-                  :options="['Categorias','Option 1', 'Option 2', 'Option 3']"
-                  value="Categorias"
-                ></b-form-select>
-              </b-form-group>
-            </strong>
+            <div class="form-group">
+              <label for="categorias">Categorias</label>
+                <select class="form-control" v-model="despesa.categoria"  >
+                  <option v-for="categoria in categorias" 
+                          :key="categoria.id"
+                          :value="categoria"> <strong>{{categoria.descricao}}</strong>
+                  </option>
+                </select>
+              </div>
             <b-form-group label-for="basicCheckboxes" :label-cols="0">
               <b-form-checkbox-group
                 stacked
@@ -305,16 +303,16 @@ export default {
         lancamentoParcelado = true;
       }
 
-      if (ps == null && !objNulo) {
-        this.despesas.push({
-          descricao: this.despesa.descricao,
-          valor: this.despesa.valor,
-          data: this.FormatarData(this.despesa.data),
-          ehDespesaFixa: despesaFixa ? "Sim" : "Não",
-          ehLancamentoParcelado: lancamentoParcelado ? "Sim" : "Não"
-        });
-      }
-
+      this.obj= {
+        descricao: this.despesa.descricao,
+        valor: this.despesa.valor,
+        date: this.despesa.data,
+        categoria: this.despesa.categoria,       
+        despesaFixa: despesaFixa,
+        despesaUnica: lancamentoParcelado,
+        pago: true
+      };
+      this.PostDespesa();
       this.LimparCamposModalDespesa();
     },
     LimparCamposModalDespesa() {
@@ -360,6 +358,11 @@ export default {
         (this.receita.data = ""),
         (this.receita.ehDespesaFixa = false),
         (this.receita.ehLancamentoParcelado = false);
+    },
+    PostDespesa(obj){
+      axios.post("http://localhost:8080/despesa", this.obj).then(response =>{
+        this.obj = response.data
+      })
     },
     PostReceita(obj) {
       axios.post("http://localhost:8080/receita", this.obj).then(response => {
