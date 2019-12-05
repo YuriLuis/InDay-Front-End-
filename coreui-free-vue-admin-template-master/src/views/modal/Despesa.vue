@@ -312,7 +312,7 @@ export default {
         despesaUnica: lancamentoParcelado,
         pago: true
       };
-      this.PostDespesa();
+      this.PostDespesa(this.obj);
       this.LimparCamposModalDespesa();
     },
     LimparCamposModalDespesa() {
@@ -360,7 +360,7 @@ export default {
         (this.receita.ehLancamentoParcelado = false);
     },
     PostDespesa(obj){
-      axios.post("http://localhost:8080/despesa", this.obj).then(response =>{
+      axios.post("http://localhost:8080/despesa/cadastrar", this.obj).then(response =>{
         this.obj = response.data
       })
     },

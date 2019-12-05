@@ -65,7 +65,7 @@ export default {
    },
    AutenticaUsuario(login){
    axios
-     .post("login/autentica/",this.login)
+     .post("http://localhost:8080/login/autentica/",this.login)
      .then(response => {
        this.logado =    response.data;
       })
