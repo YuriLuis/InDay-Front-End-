@@ -118,7 +118,13 @@ export default {
   },
   
   watch: {
-    despesaNova: function(val) {}
+    despesaNova: function(val) {},
+    despesas : function(val){
+     this.GetDespesas()
+    },
+    receitas: function(val){
+      this.GetReceitas()
+    }
   },
   mounted() {
     this.GetReceitas();
