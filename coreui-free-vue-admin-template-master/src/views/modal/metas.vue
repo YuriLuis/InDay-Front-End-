@@ -47,7 +47,7 @@
               <strong>Lançamento de metas</strong>
               <small></small>
             </div>
-
+meta {{meta}}
             <b-form-group>
               <label for="descrição"> <strong>Descrição</strong></label>
               <b-form-input type="text" id="descrição"  v-model="meta.descricao" placeholder="Informe a descrição"></b-form-input>
@@ -93,7 +93,7 @@
             <div class="form-actions">
               <b-row class="align-items-center mt-2">
                 <b-col sm xs="12" class="text-center mt-2">
-                <b-button type="submit" variant="success" size="sm" @click="salvarMetas(meta)">Salvar</b-button>                </b-col>
+                <b-button type="submit" variant="success" size="sm" @click="salvarMetas()">Salvar</b-button>                </b-col>
                 <b-col sm xs="12" class="text-center mt-2">
                 </b-col>
               </b-row>
@@ -115,7 +115,7 @@ export default {
   components: {
     tabelaMetas,
   },
-  data() {
+  data: function () {
     return {
       myModal: false,
       largeModal: false,
@@ -126,9 +126,9 @@ export default {
       dangerModal: false,
       infoModal: false,
       meta: {
-        descricao: "",
+        descricao: "teste01",
         dataInicio: "",
-        datafim: "",
+        dataFim: "",
         valorMensal: "",
         categoria: "",
       },
@@ -139,21 +139,26 @@ export default {
 
 },
 methods: {
-  salvarMetas(meta) {
-    let objNulo = false
+  salvarMetas() {
+    console.log("salvar meta",this.meta)
+    // let objNulo = false
+    let self = this;
 
-
-    axios.post ("/meta",this.meta).then(response => {
-       this.meta =    response.data
+    axios.post("/meta",this.meta).then(response => {
+      console.log("response post",response)
+      self.LimparCamposMetas();
+      self.GetMetas();
+      self.primaryModal = false;
+    //   //  this.meta =    response.data
     });
-    this.LimparCamposMetas();    
+      
   },
-    LimparCamposMetas() {
-        (this.meta.descricao = "");
-        (this.meta.datainicio = "");
-        (this.meta.datafim = "");
-        (this.meta.valorMensal = "");
-        (this.meta.categoria = "");    
+  LimparCamposMetas() {
+        this.meta.descricao = "";
+        this.meta.dataInicio = "";
+        this.meta.dataFim = "";
+        this.meta.valorMensal = "";
+        this.meta.categoria = "";    
   },
     
     // PostMetas(obj) {
