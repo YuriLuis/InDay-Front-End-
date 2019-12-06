@@ -21,12 +21,12 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="meta in metas" :key="meta.descricao">
+                <tr v-for="meta in metasNova" :key="meta.id">
                   <td>{{meta.descricao}}</td>
-                  <td>{{meta.valor}}</td>
-                  <td>{{meta.datainicio}}</td>
-                  <td>{{meta.datafim}}</td>
-                  <td>{{meta.categoria}}</td>
+                  <td>{{meta.valorMensal}}</td>
+                  <td>{{meta.dataInicio}}</td>
+                  <td>{{meta.dataFim}}</td>
+                  <td>{{meta.categoria?meta.categoria.descricao:"Não informada"}}</td>
                 </tr>
               </tbody>
             </table>
@@ -37,42 +37,45 @@
 </div>   
 </template>
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 export default {
   props: {
-    metaNova: {
+    metasNova: {
       typer: Array
     },
   },
   name: "tabelaMeta",
 
-  data() {
-    return {
-      metas: [],
+  // // data() {
+  //   return {
+  //     metas: [],
      
-    };
-  },
-  methods: {
-    SalvarListaMetas() {},
-    GetMetas(){
-    axios
-    .get("http://localhost:8080/meta")
-    .then(response =>{
-      this.metas = response.data
-    })
+  //   };
+  // },
+  // methods: {
+  //   SalvarListaMetas() {},
+  //   GetMetas(){
+  //   console.log("erro");
+  //   axios
+  //   .get("http://localhost:8080/meta")
+  //   .then(response =>{
+  //     console.log("erro",response);
+  //     this.metas = response.data
+  //   })
   
-  },
+  // },
   
-  watch: {
-    metas: function(val) {
-      this.GetMetas()
-    }
-  },
-  mounted() {
-    this.GetMetas();
+  // watch: {
+  //   metas: function(val) {
+  //     this.GetMetas()
+  //   }
+  // },
+  // mounted() {
+  //   console.log("mouted")
+  //   this.GetMetas();
    
-  }
-  },
+  // }
+  
 }
 
 </script>

@@ -25,7 +25,8 @@
       </b-card>
     </div>
 
-    <tabela-metas :metasNova="metas"></tabela-metas>
+    <tabela-metas :metasNova="metas"></tabela-metas> 
+    
 
     <b-modal
       title="Metas"
@@ -140,6 +141,8 @@ export default {
 methods: {
   salvarMetas(meta) {
     let objNulo = false
+
+
     axios.post ("/meta",this.meta).then(response => {
        this.meta =    response.data
     });
@@ -150,19 +153,20 @@ methods: {
         (this.meta.datainicio = "");
         (this.meta.datafim = "");
         (this.meta.valorMensal = "");
-        (this.meta.ehMetaFixa = "");
         (this.meta.categoria = "");    
   },
     
-    PostMetas(obj) {
-      axios.post("http://localhost:8080/meta", this.obj).then(response => {
-        this.obj = response.data;
-      });
-    },
+    // PostMetas(obj) {
+    //   axios.post("http://localhost:8080/meta", this.obj).then(response => {
+    //     this.obj = response.data;
+    //   });
+    // },
     GetMetas() {
+      console.log("metas get metas")
       axios
       .get("http://localhost:8080/meta")
       .then(response => {
+        console.log("metas get metas",response)
        this.metas = response.data
       });
     },
@@ -174,10 +178,12 @@ methods: {
       });
     }
   },
-   created: function () {
-    // this.GetMetas();
-  },
+  //  created: function () {
+  //    console.log("metas created")
+  //   this.GetMetas();
+  // },
     mounted() {
+      console.log("metas mouted")
       this.GetMetas();
       this.GetCategorias();
     }

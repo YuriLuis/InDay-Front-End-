@@ -1,11 +1,11 @@
 <template>
     <AppHeader fixed>
-      <SidebarToggler class="d-lg-none" display="md" mobile />
+      <!--<SidebarToggler class="d-lg-none" display="md" mobile />-->
       <b-link class="navbar-brand" to="#">
         <img class="navbar-brand-full" src="img/brand/inday.png" width="89" height="25" alt="CoreUI Logo">
         <img class="navbar-brand-minimized" src="img/brand/sygnet.svg" width="30" height="30" alt="CoreUI Logo">
       </b-link>
-      <SidebarToggler class="d-md-down-none" display="lg" :defaultOpen=true />
+      <!--<SidebarToggler class="d-md-down-none" display="lg" :defaultOpen=true />-->
       <b-navbar-nav class="d-md-down-none">
         <b-nav-item class="px-3" to="/dashboard" >Início</b-nav-item>
         <b-nav-item class="px-3" to="/modal" exact>Lançamentos</b-nav-item>
@@ -41,7 +41,7 @@ export default {
     AsideToggler,
     AppHeader,
     DefaultHeaderDropdownAccnt,
-    //SidebarToggler
+    SidebarToggler
   }
 }
 </script>
