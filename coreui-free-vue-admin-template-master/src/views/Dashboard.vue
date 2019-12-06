@@ -1,28 +1,11 @@
 <template>
   <div class="animated fadeIn">
     <b-row>
-      <b-col sm="6" lg="12">
-        <b-card no-body class="bg-primary">
-          <b-card-body class="pb-8">
-            <h4 class="mb-8">Saldo</h4>
-            <h2 align="center">R$ </h2>
-          </b-card-body>
-          <card style="height:70px;" :height="70" />
-        </b-card>
-      </b-col>
-
       <b-col sm="6" lg="3">
-        <b-card no-body class="bg-danger">
+        <b-card no-body class="bg-primary">
           <b-card-body class="pb-0">
-            <b-dropdown class="float-right" variant="transparent p-0" right>
-              <template slot="button-content">
-                <i class="icon-plus"></i>
-              </template>
-              <b-dropdown-item>Despesa</b-dropdown-item>
-              <b-dropdown-item>Receita</b-dropdown-item>
-              <b-dropdown-item>Metas</b-dropdown-item>
-            </b-dropdown>
-            <h4 class="mb-0">Atalho</h4>
+            <h4 class="mb-0">Saldo</h4>
+            <h2 align="center">R$ {{saldo}}</h2>
             <p></p>
           </b-card-body>
           <card style="height:70px;" height="70" />
@@ -47,9 +30,9 @@ export default {
   methods: {
     GerarSaldo() {
       axios
-      .get("http://localhost:8080/receita")
+      .get("http://localhost:8080/despesa/saldo")
       .then(response => {
-        this.receitas = response.data;
+        this.saldo = response.data;
       });
      console.log(this.receitas.length)
     }
