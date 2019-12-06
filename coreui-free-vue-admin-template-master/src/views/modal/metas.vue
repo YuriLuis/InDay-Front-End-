@@ -5,18 +5,19 @@
         <b-card-header>
           <strong>Metas</strong>
         </b-card-header>
+
         <b-card-body>
           <b-row class="align-items-center mt-3">
             <b-col sm xs="12" class="text-center mt-3">
               <b-button
                 type="button"
                 variant="warning"
-                @click="warningModal = true"
+                @click="primaryModal = true"
                 class="mr-1"
                 size="lg"
               >Metas</b-button>
             </b-col>
-
+           
             <!--/.col-->
           </b-row>
           <!--/.row-->
@@ -24,14 +25,19 @@
       </b-card>
     </div>
 
+    <tabela-metas :metasNova="metas"></tabela-metas>
+
     <b-modal
       title="Metas"
-      variant="warning"
-      header-bg-variant="warning"
-      content-class="border-warning"
-      v-model="warningModal"
-      @ok="warningModal = false"
-      ok-variant="warning"
+      variant="primary"
+      header-bg-variant="primary"
+      content-class="border-primary"
+      v-model="primaryModal"
+      @ok="primaryModal = false" 
+      ok-title="Sair"
+      cancel-disabled
+      no-close-on-esc
+      no-close-on-backdrop
     >
       <b-row>
         <b-col sm="12">
@@ -40,21 +46,22 @@
               <strong>Lançamento de metas</strong>
               <small></small>
             </div>
+
             <b-form-group>
-              <label for="descrição" te> <strong>Descrição</strong></label>
-              <b-form-input type="text" id="descrição" placeholder="Informe a descrição"></b-form-input>
+              <label for="descrição"> <strong>Descrição</strong></label>
+              <b-form-input type="text" id="descrição"  v-model="meta.descricao" placeholder="Informe a descrição"></b-form-input>
             </b-form-group>
             <b-row>
               <b-col sm="6">
                 <b-form-group>
-                  <label for="de"><strong>De</strong></label>
-                  <b-form-input type="Date" id="de"></b-form-input>
+                  <label for="Data Inicio"><strong>Data Inicio</strong></label>
+                  <b-form-input type="date" v-model="meta.dataInicio" id="data"></b-form-input>
                 </b-form-group>
               </b-col>
               <b-col sm="6">
                 <b-form-group>
-                  <label for="data"><strong>Até</strong></label>
-                  <b-form-input type="date" id="data"></b-form-input>
+                  <label for="Data Fim"><strong>Data Fim</strong></label>
+                  <b-form-input type="date" v-model="meta.dataFim" id="data"></b-form-input>
                 </b-form-group>
               </b-col>
             </b-row>
@@ -68,26 +75,24 @@
                       <i class="fa fa-brasil"></i>
                     </b-input-group-text>
                   </b-input-group-prepend>
-                  <b-form-input type="text" placeholder="R$ 0.00"></b-form-input>
+                  <b-form-input type="text" v-model="meta.valorMensal" placeholder="R$ 0.00"></b-form-input>
                 </b-input-group>
               </b-form-group>
             </b-col>
              
-            <strong> 
-            <b-form-group label="Categoria" label-for="Categorias" :label-cols="3">
-              <b-form-select
-                id="basicSelect"
-                :plain="true"
-                :options="['Categorias','Option 1', 'Option 2', 'Option 3']"
-                value="Categorias"
-              ></b-form-select>
-            </b-form-group>
-            </strong>
+            <div class="form-group">
+              <label for="categorias">Categorias</label>
+                <select class="form-control" v-model="meta.categoria"  >
+                  <option v-for="categoria in categorias" 
+                          :key="categoria.id"
+                          :value="categoria"> <strong>{{categoria.descricao}}</strong>
+                  </option>
+                </select>
+              </div>
             <div class="form-actions">
               <b-row class="align-items-center mt-2">
                 <b-col sm xs="12" class="text-center mt-2">
-                  <b-button type="submit" variant="success" size="sm">Salvar</b-button>
-                </b-col>
+                <b-button type="submit" variant="success" size="sm" @click="salvarMetas(meta)">Salvar</b-button>                </b-col>
                 <b-col sm xs="12" class="text-center mt-2">
                   <b-button type="button" variant="danger" size="sm">Cancelar</b-button>
                 </b-col>
@@ -101,8 +106,15 @@
 </template>
 
 <script>
+import tabelaMetas from "./tabelaMetas";
+import categoria from "./categoria";
+import axios from 'axios'
+
 export default {
-  name: "Despesa",
+  name: "Metas",
+  components: {
+    tabelaMetas,
+  },
   data() {
     return {
       myModal: false,
@@ -112,9 +124,70 @@ export default {
       successModal: false,
       warningModal: false,
       dangerModal: false,
-      infoModal: false
+      infoModal: false,
+      meta: {
+        descricao: "",
+        dataInicio: "",
+        datafim: "",
+        valorMensal: "",
+        categoria: "",
+      },
+      obj:{},
+      metas: [], 
+      categorias:[]
     };
-  }
+
+},
+methods: {
+  salvarMetas(meta) {
+    let objNulo = false
+    axios.post ("/meta",this.meta).then(response => {
+       this.meta =    response.data
+    });
+    this.meta.id = null;
+    this.meta.descricao = "";
+    alert('Cadastrado!');     
+    // this.PostMetas(this.obj)
+    PostMetas(obj)
+    this.LimparCamposMetas();    
+  },
+    LimparCamposMetas() {
+        (this.meta.descricao = "");
+        (this.meta.datainicio = "");
+        (this.meta.datafim = "");
+        (this.meta.valorMensal = "");
+        (this.meta.ehMetaFixa = "");
+        (this.meta.categoria = "");    
+  },
+    
+    PostMetas(obj) {
+      axios.post("http://localhost:8080/meta", this.obj).then(response => {
+        this.obj = response.data;
+      });
+    },
+    GetMetas() {
+      axios
+      .get("http://localhost:8080/meta")
+      .then(response => {
+       this.metas = response.data
+      });
+    },
+     GetCategorias() {
+      axios
+      .get("http://localhost:8080/categoria")
+      .then(response => {
+       this.categorias = response.data
+      });
+    }
+  },
+   created: function () {
+    // this.GetMetas();
+  },
+    mounted() {
+      this.GetMetas();
+      this.GetCategorias();
+    }
+  
 };
 </script>
 
