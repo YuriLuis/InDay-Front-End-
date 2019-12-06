@@ -94,7 +94,6 @@
                 <b-col sm xs="12" class="text-center mt-2">
                 <b-button type="submit" variant="success" size="sm" @click="salvarMetas(meta)">Salvar</b-button>                </b-col>
                 <b-col sm xs="12" class="text-center mt-2">
-                  <b-button type="button" variant="danger" size="sm">Cancelar</b-button>
                 </b-col>
               </b-row>
             </div>
@@ -144,11 +143,6 @@ methods: {
     axios.post ("/meta",this.meta).then(response => {
        this.meta =    response.data
     });
-    this.meta.id = null;
-    this.meta.descricao = "";
-    alert('Cadastrado!');     
-    // this.PostMetas(this.obj)
-    PostMetas(obj)
     this.LimparCamposMetas();    
   },
     LimparCamposMetas() {

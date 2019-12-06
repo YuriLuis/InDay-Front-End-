@@ -10,7 +10,7 @@
             </b-card-header>
 
             <table class="table table-hover table-success">
-              <thead class="bg-primary">
+              <thead class="bg-warning">
                 <tr>
                   <th scope="col">Descrição</th>
                   <th scope="col">Valor mensal</th>
@@ -64,7 +64,9 @@ export default {
   },
   
   watch: {
-    metaNova: function(val) {}
+    metas: function(val) {
+      this.GetMetas()
+    }
   },
   mounted() {
     this.GetMetas();

@@ -132,6 +132,7 @@ function configRoutes() {
           meta:{label:''},
           component:tabelaDespesa
         },
+        
        
         {
           path: 'users',

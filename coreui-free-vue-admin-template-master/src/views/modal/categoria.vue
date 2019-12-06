@@ -31,7 +31,8 @@
       content-class="border-warning"
       v-model="warningModal"
       @ok="warningModal = false"
-      ok-variant="warning">
+      ok-variant="warning"
+    >
       <b-row>
         <b-col sm="12">
           <b-card>
@@ -40,34 +41,40 @@
               <small></small>
             </div>
             <b-form-group>
-              <label for="descrição" te> <strong>Descrição</strong></label>
-              <b-form-input type="text"
-                            id="descrição" 
-                            placeholder="Informe a descrição"
-                            v-model="categoria.descricao"
-                >
-              </b-form-input>
+              <label for="descrição" te>
+                <strong>Descrição</strong>
+              </label>
+              <b-form-input
+                type="text"
+                id="descrição"
+                placeholder="Informe a descrição"
+                v-model="categoria.descricao"
+              ></b-form-input>
             </b-form-group>
-                  <b-col sm xs="12" class="text-center mt-5">
-          <b-button type="submit" variant="success" size="sm" @click="SalvarDescricao()">Salvar</b-button>
-      </b-col>
-
+            <b-col sm xs="12" class="text-center mt-5">
+              <b-button type="submit" variant="success" size="sm" @click="SalvarDescricao()">Salvar</b-button>
+            </b-col>
           </b-card>
         </b-col>
       </b-row>
     </b-modal>
+    <tabela-categoria></tabela-categoria>
   </div>
 </template>
 
 <script>
-import axios from "axios"
+import tabelaCategoria from "./tabelaCategoria";
+import axios from "axios";
 
 export default {
+  components: {
+    tabelaCategoria
+  },
   name: "Despesa",
   data() {
     return {
       categoria: {
-        descricao: "",
+        descricao: ""
       },
       myModal: false,
       largeModal: false,
@@ -78,22 +85,17 @@ export default {
       dangerModal: false,
       infoModal: false
     };
-
   },
   methods: {
     SalvarDescricao() {
+      
       console.log(this.categoria)
-      axios.post("/categoria",this.categoria)
-      .then(response => {
-        this.categoria = response.data,
-        this.categoria.id = null,
-        this.categoria.descricao = "";
-        alert('Cadastrado!')
+      axios.post("http://localhost:8080/categoria", this.categoria).then(response => {
+        this.categoria = response.data
       });
-
     }
   }
-}
+};
 </script>
 
 <style>
